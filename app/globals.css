@@ -22,7 +22,7 @@
 }
 
 :root {
-  --strip-height: 5.25rem;
+  --strip-height: 5rem;
 }
 
 html {
@@ -30,8 +30,14 @@ html {
   background: var(--color-frost);
 }
 
+::selection {
+  background: color-mix(in srgb, var(--color-gold) 45%, transparent);
+  color: var(--color-ink);
+}
+
 body {
   color: var(--color-ink);
+  accent-color: var(--color-brazil);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -61,31 +67,20 @@ body {
   scroll-margin-top: calc(var(--strip-height) + 1rem);
 }
 
-/* Hero snowfall: three layers of flakes drifting at different speeds. */
+/* A single drifting snow layer behind the night sections. */
 .snow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(2px 2px at 20px 30px, #fff 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 90px 120px, #ffffffcc 50%, transparent 51%),
-    radial-gradient(2.5px 2.5px at 160px 60px, #ffffffaa 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 230px 180px, #fff 50%, transparent 51%),
-    radial-gradient(2px 2px at 300px 20px, #ffffffbb 50%, transparent 51%);
+    radial-gradient(1.5px 1.5px at 20px 30px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 90px 120px, #ffffffcc 50%, transparent 51%),
+    radial-gradient(2px 2px at 160px 60px, #ffffffaa 50%, transparent 51%),
+    radial-gradient(1px 1px at 230px 180px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 300px 20px, #ffffffbb 50%, transparent 51%);
   background-size: 320px 220px;
-  animation: snowfall 18s linear infinite;
-  opacity: 0.7;
-}
-.snow.slow {
-  background-size: 460px 340px;
-  animation-duration: 32s;
-  opacity: 0.45;
-  filter: blur(0.6px);
-}
-.snow.fast {
-  background-size: 260px 260px;
-  animation-duration: 11s;
-  opacity: 0.35;
+  animation: snowfall 28s linear infinite;
+  opacity: 0.4;
 }
 @keyframes snowfall {
   from {
@@ -96,46 +91,30 @@ body {
   }
 }
 
-/* Chapter bands: one pattern drawn from each city. */
+/* Chapter bands: a faint pattern drawn from each city. */
 .band-paris {
   background-color: var(--color-paris);
   background-image:
-    radial-gradient(circle at 12px 12px, #f6d27a 1.6px, transparent 2.6px),
-    radial-gradient(circle at 36px 30px, #f6d27a99 1.2px, transparent 2.2px);
-  background-size: 48px 42px;
+    radial-gradient(circle at 14px 14px, #f6d27a2e 1.2px, transparent 2px),
+    radial-gradient(circle at 46px 40px, #f6d27a1f 1px, transparent 1.8px);
+  background-size: 72px 64px;
 }
 .band-london {
   background-color: var(--color-london);
   background-image:
-    repeating-linear-gradient(90deg, #0000 0 46px, #ffffff14 46px 48px, #0000 48px 56px, #00000026 56px 60px),
-    repeating-linear-gradient(0deg, #0000 0 46px, #ffffff14 46px 48px, #0000 48px 56px, #00000026 56px 60px);
+    repeating-linear-gradient(90deg, #0000 0 46px, #ffffff0d 46px 48px, #0000 48px 56px, #0000001a 56px 60px),
+    repeating-linear-gradient(0deg, #0000 0 46px, #ffffff0d 46px 48px, #0000 48px 56px, #0000001a 56px 60px);
 }
 .band-lisbon {
   background-color: var(--color-lisbon);
   background-image:
-    radial-gradient(circle at 50% 50%, #0000 9px, #ffffff2e 10px 12px, #0000 13px),
-    conic-gradient(from 45deg at 50% 50%, #ffffff1f 0 25%, #0000 0 50%, #ffffff1f 0 75%, #0000 0),
-    radial-gradient(circle at 0 0, #ffffff26 7px, #0000 8px),
-    radial-gradient(circle at 100% 0, #ffffff26 7px, #0000 8px),
-    radial-gradient(circle at 0 100%, #ffffff26 7px, #0000 8px),
-    radial-gradient(circle at 100% 100%, #ffffff26 7px, #0000 8px);
+    radial-gradient(circle at 50% 50%, #0000 9px, #ffffff1a 10px 12px, #0000 13px),
+    conic-gradient(from 45deg at 50% 50%, #ffffff0f 0 25%, #0000 0 50%, #ffffff0f 0 75%, #0000 0),
+    radial-gradient(circle at 0 0, #ffffff14 7px, #0000 8px),
+    radial-gradient(circle at 100% 0, #ffffff14 7px, #0000 8px),
+    radial-gradient(circle at 0 100%, #ffffff14 7px, #0000 8px),
+    radial-gradient(circle at 100% 100%, #ffffff14 7px, #0000 8px);
   background-size: 52px 52px;
-}
-
-/* Ticket perforation between stub and body. */
-.ticket-perf {
-  background-image: radial-gradient(circle, var(--color-frost) 4px, transparent 4.5px);
-  background-size: 12px 14px;
-  background-repeat: repeat-y;
-  background-position: center;
-}
-
-/* Advent doors: split doors for travel days. */
-.door {
-  background: var(--door-a);
-}
-.door[data-split="true"] {
-  background: linear-gradient(135deg, var(--door-a) 0 50%, var(--door-b) 50% 100%);
 }
 
 .no-scrollbar {
@@ -145,26 +124,11 @@ body {
   display: none;
 }
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.rise {
-  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .snow,
-  .rise {
+  .snow {
     animation: none;
   }
 }

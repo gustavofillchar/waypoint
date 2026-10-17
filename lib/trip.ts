@@ -1122,5 +1122,17 @@ export const usefulLinks: TripLink[] = [
   { kind: "site", label: "Metro de Lisboa", href: "https://www.metrolisboa.pt/" },
 ];
 
+export type ChecklistSection = {
+  id: string;
+  label: string;
+  city: CityId;
+  groups: ChecklistGroup[];
+};
+
+export const checklistSections: ChecklistSection[] = [
+  { id: "geral", label: "Geral", city: "brazil", groups: generalChecklist },
+  ...cities.map((c) => ({ id: c.id, label: c.name, city: c.id, groups: c.checklist })),
+];
+
 export const cityById = Object.fromEntries(cities.map((c) => [c.id, c])) as Record<City["id"], City>;
 export const dayById = Object.fromEntries(days.map((d) => [d.id, d])) as Record<string, Day>;

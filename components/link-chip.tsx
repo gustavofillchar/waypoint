@@ -16,9 +16,9 @@ export function LinkChip({ link }: { link: TripLink }) {
       href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[0.8rem] font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) ${
+      className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-medium transition-colors duration-150 pointer-coarse:min-h-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent) ${
         isTickets
-          ? "bg-(--accent) text-white hover:brightness-110"
+          ? "bg-(--accent) text-white hover:brightness-115"
           : "border border-line bg-white text-ink hover:border-(--accent) hover:text-(--accent)"
       }`}
     >

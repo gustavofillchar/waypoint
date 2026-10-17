@@ -4,54 +4,56 @@ import { DayStrip } from "@/components/day-strip";
 import { Hero } from "@/components/hero";
 import { LinkChip } from "@/components/link-chip";
 import { Tickets } from "@/components/tickets";
-import { cities, days, generalChecklist, legs, trip, usefulLinks } from "@/lib/trip";
+import { checklistSections, cities, dayById, legs, trip, usefulLinks } from "@/lib/trip";
+
+const weekdayShort = (weekday: string) => weekday.slice(0, 3).toLowerCase();
 
 export default function Home() {
-  const doors = days.map((d) => ({
-    id: d.id,
-    dayNumber: d.dayNumber,
-    weekdayShort: d.weekday.slice(0, 3),
-    title: d.title,
-    cities: d.cities,
+  const stripGroups = cities.map((city) => ({
+    city: city.id,
+    label: city.name,
+    days: city.dayIds.map((id) => {
+      const d = dayById[id];
+      return { id: d.id, dayNumber: d.dayNumber, weekdayShort: weekdayShort(d.weekday), title: d.title };
+    }),
   }));
+  const checklistIds = checklistSections.flatMap((s) => s.groups.flatMap((g) => g.items.map((i) => `${s.id}:${i}`)));
 
   return (
     <>
       <Hero />
-      <DayStrip days={doors} />
+      <DayStrip groups={stripGroups} checklistIds={checklistIds} />
 
       <main>
-        <section aria-labelledby="trajetos-title" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="font-mono text-xs tracking-[0.24em] text-mist uppercase">4 trechos · 3 países</p>
-              <h2 id="trajetos-title" className="mt-2 font-display text-4xl text-ink sm:text-5xl">
-                Os trajetos
-              </h2>
-            </div>
-            <p className="max-w-sm text-mist">
-              Horários locais de cada cidade. Os marcados com ≈ são estimativas: confirme no cartão de embarque.
+        <section id="trajetos" aria-labelledby="trajetos-title" className="day-anchor mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+          <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
+            <h2 id="trajetos-title" className="font-display text-4xl text-ink sm:text-5xl">
+              Trajetos
+            </h2>
+            <p className="max-w-md text-mist">
+              Horários locais. Os marcados com ≈ são estimativas: confirme no cartão de embarque.
             </p>
           </div>
           <Tickets legs={legs} />
         </section>
 
-        {cities.map((city) => (
-          <Chapter key={city.id} city={city} />
-        ))}
-
-        <section data-city="brazil" aria-labelledby="geral-title" className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-          <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-            <div className="rounded-3xl bg-white p-6 sm:p-8">
-              <h2 id="geral-title" className="font-display text-2xl text-ink">
-                Para a viagem toda
+        <section
+          id="checklist"
+          aria-labelledby="checklist-title"
+          className="day-anchor border-y border-line bg-[#f7f9fb]"
+        >
+          <div className="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
+            <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between md:gap-8">
+              <h2 id="checklist-title" className="font-display text-4xl text-ink sm:text-5xl">
+                Checklist
               </h2>
-              <p className="mt-1 mb-6 text-sm text-mist">Antes de sair de casa. Fica salvo neste aparelho.</p>
-              <Checklist scope="geral" groups={generalChecklist} />
+              <p className="max-w-md text-mist">O que resolver antes de cada parte. Fica salvo neste aparelho.</p>
             </div>
-            <div className="rounded-3xl bg-white p-6 sm:p-8">
-              <h2 className="font-display text-2xl text-ink">Links úteis</h2>
-              <div className="mt-5 flex flex-wrap gap-2">
+            <Checklist sections={checklistSections} />
+
+            <div data-city="brazil" className="mt-12 border-t border-line pt-6">
+              <h3 className="font-semibold text-ink">Links úteis</h3>
+              <div className="mt-3 flex flex-wrap gap-2">
                 {usefulLinks.map((link) => (
                   <LinkChip key={link.href} link={link} />
                 ))}
@@ -59,15 +61,17 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {cities.map((city) => (
+          <Chapter key={city.id} city={city} />
+        ))}
       </main>
 
       <footer className="relative overflow-hidden bg-night text-white">
-        <div aria-hidden className="snow slow" />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
-          <p className="font-display text-[clamp(3rem,10vw,7rem)] leading-none text-gold">Feliz 2027 🥂</p>
-          <p className="mt-6 font-mono text-xs tracking-[0.24em] text-white/60 uppercase">
-            {trip.travelers.join(" · ")}
-          </p>
+        <div aria-hidden className="snow" />
+        <div className="relative mx-auto max-w-6xl px-5 py-16 text-center sm:px-6 sm:py-20">
+          <p className="font-display text-5xl leading-none text-gold sm:text-7xl">Feliz 2027</p>
+          <p className="mt-4 text-white/60">{trip.travelers.join(" · ")}</p>
         </div>
       </footer>
     </>

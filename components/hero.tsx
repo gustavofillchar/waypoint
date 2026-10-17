@@ -1,19 +1,23 @@
 import { cities, days, trip } from "@/lib/trip";
 import { Countdown } from "./countdown";
-import { PlaneIcon, TrainIcon } from "./icons";
+import { ArrowIcon } from "./icons";
 
-const lineColor = {
+const nameColor = {
   paris: "text-gold",
-  london: "text-[#ff8f9f]",
-  lisbon: "text-[#93b8f2]",
+  london: "text-[#ff9aa8]",
+  lisbon: "text-[#9fc0f5]",
 };
 
 const placeLabel = {
-  paris: "🇫🇷 Paris",
-  london: "🇬🇧 Londres",
-  lisbon: "🇵🇹 Lisboa",
-  brazil: "🇧🇷 Voo para casa",
+  paris: "Paris",
+  london: "Londres",
+  lisbon: "Lisboa",
+  brazil: "voo para casa",
 };
+
+function joinNames(names: string[]) {
+  return names.length > 1 ? `${names.slice(0, -1).join(", ")} e ${names.at(-1)}` : names.join("");
+}
 
 export function Hero() {
   const dayMeta = days.map((d) => ({
@@ -24,73 +28,42 @@ export function Hero() {
 
   return (
     <header className="relative overflow-hidden bg-night text-white">
-      <div aria-hidden className="snow slow" />
       <div aria-hidden className="snow" />
-      <div aria-hidden className="snow fast" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-night-2/80 to-transparent"
-      />
 
-      <div className="relative mx-auto max-w-6xl px-4 pt-8 pb-16 sm:px-6 sm:pb-24">
-        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 font-mono text-[0.7rem] tracking-[0.24em] text-white/60 uppercase">
-          <span>Eurotrip de Natal</span>
-          <span>{trip.period.replace(" de 2026", "")} · 2026</span>
-        </div>
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-5 pt-10 pb-10 sm:px-6 sm:pt-16 sm:pb-14 lg:grid-cols-[1fr_26rem] lg:items-end lg:gap-16">
+        <div>
+          <h1 className="font-display text-[2.75rem] leading-[0.95] tracking-[-0.01em] text-balance sm:text-6xl lg:text-7xl">
+            {trip.title}
+          </h1>
+          <p className="mt-4 text-lg text-white/80">{trip.period}</p>
+          <p className="mt-1 text-white/60">{joinNames(trip.travelers)}</p>
 
-        <h1 className="mt-14 sm:mt-20">
-          <span className="sr-only">Eurotrip de Natal: </span>
-          {cities.map((city, i) => (
-            <a
-              key={city.id}
-              href={`#${city.id}`}
-              className="rise group flex flex-wrap items-baseline gap-x-6 gap-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
-              style={{ animationDelay: `${i * 140}ms` }}
-            >
-              <span
-                className={`font-display text-[clamp(4rem,15vw,10.5rem)] leading-[0.9] tracking-[-0.02em] transition group-hover:translate-x-2 ${lineColor[city.id]}`}
-              >
-                {city.name}
-              </span>
-              <span className="font-mono text-xs tracking-[0.16em] text-white/55 uppercase sm:text-sm">
-                {city.period} · {city.tagline}
-              </span>
-            </a>
-          ))}
-        </h1>
-
-        <div className="mt-14 grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div className="rise" style={{ animationDelay: "500ms" }}>
-            <p className="font-mono text-[0.7rem] tracking-[0.24em] text-white/50 uppercase">Passageiros</p>
-            <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
-              {trip.travelers.map((name) => (
-                <li key={name} className="font-display text-2xl text-white sm:text-3xl">
-                  {name}
-                </li>
-              ))}
-            </ul>
-            <p
-              className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm text-white/70"
-              aria-label="Rota: Guarulhos, Paris, Londres, Lisboa, Paris, Guarulhos"
-            >
-              {trip.route.map((code, i) => (
-                <span key={`${code}-${i}`} className="flex items-center gap-2">
-                  {i > 0 &&
-                    (code === "STP" ? (
-                      <TrainIcon className="size-4 text-gold" />
-                    ) : (
-                      <PlaneIcon className="size-4 text-gold" />
-                    ))}
-                  <span className={code === "GRU" ? "text-white" : undefined}>{code}</span>
-                </span>
-              ))}
-            </p>
-          </div>
-
-          <div className="rise" style={{ animationDelay: "650ms" }}>
+          <div className="mt-8 border-t border-white/15 pt-6">
             <Countdown departureISO={trip.departureISO} days={dayMeta} />
           </div>
         </div>
+
+        <nav aria-label="Cidades">
+          <ol className="divide-y divide-white/15 border-y border-white/15">
+            {cities.map((city) => (
+              <li key={city.id}>
+                <a
+                  href={`#${city.id}`}
+                  className="group flex min-h-16 items-center gap-4 py-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                >
+                  <span className={`font-display text-3xl leading-none sm:text-4xl ${nameColor[city.id]}`}>
+                    {city.name}
+                  </span>
+                  <span className="ml-auto text-right text-sm leading-tight text-white/70">
+                    <span className="block font-medium text-white/90 tabular-nums">{city.period}</span>
+                    {city.tagline}
+                  </span>
+                  <ArrowIcon className="size-4 shrink-0 text-white/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-white" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
       </div>
     </header>
   );

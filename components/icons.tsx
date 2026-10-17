@@ -73,6 +73,24 @@ export function CheckIcon({ className }: IconProps) {
   );
 }
 
+export function ChecklistIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <rect x="4" y="4" width="16" height="16" rx="3.5" />
+      <path d="m8.5 12.2 2.4 2.4 4.6-4.9" />
+    </svg>
+  );
+}
+
+export function AlertIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5v5.5M12 16.4v.1" />
+    </svg>
+  );
+}
+
 export function ArrowIcon({ className }: IconProps) {
   return (
     <svg {...base} className={className}>
