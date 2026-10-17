@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+@theme {
+  --color-night: #0e1830;
+  --color-night-2: #17244a;
+  --color-frost: #edf1f5;
+  --color-ink: #141a26;
+  --color-mist: #5b6578;
+  --color-line: #d5dce5;
+
+  --color-paris: #1d2e5c;
+  --color-gold: #d6a63a;
+  --color-london: #b0122d;
+  --color-moss: #1f3b2d;
+  --color-lisbon: #1d50a0;
+  --color-tram: #f2b705;
+  --color-brazil: #0f7a47;
+
+  --font-display: var(--font-gloock), "Georgia", serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+:root {
+  --strip-height: 5.25rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-frost);
+}
+
+body {
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-city="paris"] {
+  --accent: var(--color-paris);
+  --accent-2: var(--color-gold);
+  --accent-soft: #e4e8f3;
+}
+[data-city="london"] {
+  --accent: var(--color-london);
+  --accent-2: var(--color-moss);
+  --accent-soft: #f6e3e6;
+}
+[data-city="lisbon"] {
+  --accent: var(--color-lisbon);
+  --accent-2: var(--color-tram);
+  --accent-soft: #e2ebf8;
+}
+[data-city="brazil"] {
+  --accent: var(--color-brazil);
+  --accent-2: var(--color-tram);
+  --accent-soft: #e1f1e8;
+}
+
+.day-anchor {
+  scroll-margin-top: calc(var(--strip-height) + 1rem);
+}
+
+/* Hero snowfall: three layers of flakes drifting at different speeds. */
+.snow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 90px 120px, #ffffffcc 50%, transparent 51%),
+    radial-gradient(2.5px 2.5px at 160px 60px, #ffffffaa 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 230px 180px, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 300px 20px, #ffffffbb 50%, transparent 51%);
+  background-size: 320px 220px;
+  animation: snowfall 18s linear infinite;
+  opacity: 0.7;
+}
+.snow.slow {
+  background-size: 460px 340px;
+  animation-duration: 32s;
+  opacity: 0.45;
+  filter: blur(0.6px);
+}
+.snow.fast {
+  background-size: 260px 260px;
+  animation-duration: 11s;
+  opacity: 0.35;
+}
+@keyframes snowfall {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 60px 660px;
+  }
+}
+
+/* Chapter bands: one pattern drawn from each city. */
+.band-paris {
+  background-color: var(--color-paris);
+  background-image:
+    radial-gradient(circle at 12px 12px, #f6d27a 1.6px, transparent 2.6px),
+    radial-gradient(circle at 36px 30px, #f6d27a99 1.2px, transparent 2.2px);
+  background-size: 48px 42px;
+}
+.band-london {
+  background-color: var(--color-london);
+  background-image:
+    repeating-linear-gradient(90deg, #0000 0 46px, #ffffff14 46px 48px, #0000 48px 56px, #00000026 56px 60px),
+    repeating-linear-gradient(0deg, #0000 0 46px, #ffffff14 46px 48px, #0000 48px 56px, #00000026 56px 60px);
+}
+.band-lisbon {
+  background-color: var(--color-lisbon);
+  background-image:
+    radial-gradient(circle at 50% 50%, #0000 9px, #ffffff2e 10px 12px, #0000 13px),
+    conic-gradient(from 45deg at 50% 50%, #ffffff1f 0 25%, #0000 0 50%, #ffffff1f 0 75%, #0000 0),
+    radial-gradient(circle at 0 0, #ffffff26 7px, #0000 8px),
+    radial-gradient(circle at 100% 0, #ffffff26 7px, #0000 8px),
+    radial-gradient(circle at 0 100%, #ffffff26 7px, #0000 8px),
+    radial-gradient(circle at 100% 100%, #ffffff26 7px, #0000 8px);
+  background-size: 52px 52px;
+}
+
+/* Ticket perforation between stub and body. */
+.ticket-perf {
+  background-image: radial-gradient(circle, var(--color-frost) 4px, transparent 4.5px);
+  background-size: 12px 14px;
+  background-repeat: repeat-y;
+  background-position: center;
+}
+
+/* Advent doors: split doors for travel days. */
+.door {
+  background: var(--door-a);
+}
+.door[data-split="true"] {
+  background: linear-gradient(135deg, var(--door-a) 0 50%, var(--door-b) 50% 100%);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .snow,
+  .rise {
+    animation: none;
+  }
+}
